@@ -10,19 +10,26 @@ const Header = () => {
   };
 
   return (
-    <div className="grid grid-cols-3 shadow-md p-2 items-center">
-      {/* Logo Section */}
-      <div className="flex items-center">
+    <div className="grid grid-cols-3 items-center shadow-md px-4 py-2 bg-white">
+      
+      {/* Logo / Menu Section */}
+      <div className="flex items-center gap-3">
+        <button
+          onClick={handleToggleMenu}
+          className="p-2 rounded-full hover:bg-gray-200 active:scale-95 transition-all duration-200"
+          aria-label="Toggle Menu"
+        >
+          <img
+            className="h-6 w-6"
+            alt="Menu"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnMg7VcAc6WkebF912z4ABmiZPlt1Y_TpXbg&s"
+          />
+        </button>
+
         <img
           className="h-10 cursor-pointer"
-          alt="Menu"
-          src="https://th.bing.com/th/id/OIP.A1uEYumGY9JXr_AB4bQl3gHaHa?w=250&h=250&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
-          onClick={handleToggleMenu}
-        />
-        <img
-          className="h-9 ml-4"
           alt="YouTube Logo"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Logo_of_YouTube_%282015-2017%29.svg/960px-Logo_of_YouTube_%282015-2017%29.svg.png"
+          src="https://1000logos.net/wp-content/uploads/2017/05/Youtube-Logo-2017-2048x1152.png"
         />
       </div>
 
@@ -33,20 +40,20 @@ const Header = () => {
           type="text"
           placeholder="Search"
         />
-        <button className="px-4 py-2 border border-gray-300 rounded-r-full bg-gray-100">
+        <button className="px-5 py-2 border border-gray-300 rounded-r-full bg-gray-100 hover:bg-gray-200 transition">
           Search
         </button>
       </div>
 
       {/* Profile Section */}
-      <div className="flex justify-end items-center gap-4 pr-4">
+      <div className="flex justify-end items-center gap-4">
         <img
-          className="h-8 w-8"
+          className="h-8 w-8 cursor-pointer"
           alt="Bell Icon"
           src="https://www.bing.com/th/id/OIP.ok0xXCChzb0Ti3hSC8BH-QHaHa?w=195&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
         />
         <img
-          className="h-10 w-10 rounded-full"
+          className="h-10 w-10 rounded-full cursor-pointer"
           alt="User Profile"
           src="https://www.bing.com/th/id/OIP.7O4_GREtLbxqPdJCTmfatQHaHa?w=195&h=211&c=8&rs=1&qlt=90&o=6&dpr=1.3&pid=3.1&rm=2"
         />
