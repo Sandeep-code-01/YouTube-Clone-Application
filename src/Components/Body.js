@@ -4,9 +4,11 @@ import MainContainer from "./MainContainer";
 
 const Body = () => {
   return (
-    <div className="flex">
+    <div className="flex min-h-screen bg-gray-100">
       <SideBar />
-      <MainContainer />
+      <main className="flex-1">
+        <MainContainer />
+      </main>
     </div>
   );
 };

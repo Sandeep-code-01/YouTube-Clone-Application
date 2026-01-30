@@ -4,8 +4,7 @@ import VideoContainer from './VideoContainer'
 
 const MainContainer = () => {
   return (
-    <div>
-      <h1 className="text-3xl font-semibold text-gray-900">Main Container</h1>
+    <div className="p-4 flex flex-col gap-6">
       <ButtonLists />
       <VideoContainer />
     </div>

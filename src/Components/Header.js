@@ -21,7 +21,7 @@ const Header = () => {
           aria-label="Toggle Menu"
         >
           <img
-            className="h-6 w-6"
+            className="h-5 w-6"
             alt="Menu"
             src={menulink}
           />
