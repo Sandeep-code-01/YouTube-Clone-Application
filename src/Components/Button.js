@@ -1,9 +1,9 @@
-import react, {useState} from "react";
+import React, { useState } from "react";
 
 const categories = [
   "All",
   "Technology",
-  "Health", 
+  "Health",
   "Science",
   "Sports",
   "Entertainment",
@@ -14,19 +14,19 @@ const categories = [
   "Lifestyle",
   "Education",
   "Food",
-  "Art",
 ];
 
 const Button = () => {
   const [active, setActive] = useState("All");
-  
+
   return (
-    <div className="button-container">
-      {categories.map((item)=>(
+    <div className="flex flex-wrap gap-2 p-2">
+      {categories.map((item) => (
         <button
           key={item}
           onClick={() => setActive(item)}
-          className={active === item ? "active" : ""}
+          className={`px-4 py-2 rounded-full border transition-colors duration-300
+            ${active === item ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"}`}
         >
           {item}
         </button>
