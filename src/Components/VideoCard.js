@@ -1,37 +1,55 @@
 import React from "react";
+import { getRelativeTime } from "../Utils/date"; 
 
 const VideoCard = ({ info }) => {
   if (!info || !info.snippet) return null;
 
   const { snippet, statistics } = info;
-  const { channelTitle, title, thumbnails , channelThumbnail} = snippet;
+  const { title, channelTitle, thumbnails, publishedAt } = snippet;
+
+  // Function to format views in K/M
+  const formatViews = (num) => {
+    if (!num) return "Views not available";
+    const n = Number(num);
+    if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M views";
+    if (n >= 1_000) return (n / 1_000).toFixed(1) + "K views";
+    return n + " views";
+  };
+
+  const views = formatViews(statistics?.viewCount);
+  const publishedTime = getRelativeTime(publishedAt);
 
   return (
-    <div className="w-72 m-3 cursor-pointer">
+    <div className="w-72 m-3 cursor-pointer hover:scale-[1.02] transition-transform">
       {/* Thumbnail */}
-      <div className="relative">
+      <div className="relative overflow-hidden rounded-xl">
         <img
           src={thumbnails?.medium?.url}
           alt={title}
-          className="rounded-xl w-full hover:scale-105 transition-transform duration-200"
+          className="w-full"
         />
       </div>
 
-      {/* Content */}
-      <div className="mt-3">
-        <h3 className="font-semibold text-sm line-clamp-2">
-          {title}
-        </h3>
+      {/* Video Info */}
+      <div className="flex mt-3">
+        {/* Channel Icon */}
+        <img
+          src={thumbnails?.default?.url}
+          alt={channelTitle}
+          className="w-10 h-10 rounded-full mr-3"
+        />
 
-        <p className="text-gray-500 text-xs mt-1">
-          {channelTitle}
-        </p>
+        <div className="flex flex-col">
+          <h3 className="font-semibold text-sm leading-snug line-clamp-2">
+            {title}
+          </h3>
 
-        <p className="text-gray-500 text-xs">
-          {statistics?.viewCount
-            ? `${Number(statistics.viewCount).toLocaleString()} views`
-            : "Views not available"}
-        </p>
+          <p className="text-gray-500 text-xs mt-1">{channelTitle}</p>
+
+          <p className="text-gray-500 text-xs">
+            {views} • {publishedTime}
+          </p>
+        </div>
       </div>
     </div>
   );
