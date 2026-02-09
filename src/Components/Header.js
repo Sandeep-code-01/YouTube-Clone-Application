@@ -15,8 +15,16 @@ const Header = () => {
 
   useEffect(() => {
     if (searchQuery === "") return;
-    getSearchSuggestions();
+
+   const timer = setTimeout(() => getSearchSuggestions(), 200);
+
+  return () => {
+    clearTimeout(timer);
+  };
+  
   }, [searchQuery]);
+
+  
 
   const getSearchSuggestions = async () => {
     const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);

@@ -1,0 +1,9 @@
+//////////////////////////// debouncing////////////////////
+/**
+* key -i 
+* render the component 
+* use Effect();
+* start timer => make an api call 
+*
+*
+*
