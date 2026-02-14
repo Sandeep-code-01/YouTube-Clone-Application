@@ -1,4 +1,3 @@
-import { comment } from 'postcss';
 import React from 'react';
 
 const CommentData = [
@@ -66,9 +65,9 @@ const Comment = ({ data }) => {
   );
 };
 
-const commentList= () => {
-    return  CommentData.map((comment) => <Comment data={comment} />)
-}
+// const commentList= () => {
+    // return  CommentData.map((comment) => <Comment data={comment} />)
+// }
 
 // Comment Container Component
 const CommentContainer = () => {
