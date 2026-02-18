@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addMessages } from "../Utils/chatSlice";
 import ChatMessage from "./ChatMessage";
@@ -8,7 +8,6 @@ const LiveChat = () => {
   const dispatch = useDispatch();
   const chatMessages = useSelector((store) => store.chat?.messages || []);
   const [liveMessage, setLiveMessage] = useState("");
-  const chatRef = useRef(null);
 
   // Fake incoming messages
   useEffect(() => {
@@ -23,14 +22,6 @@ const LiveChat = () => {
 
     return () => clearInterval(interval);
   }, [dispatch]);
-
-  // Auto scroll to bottom
-  useEffect(() => {
-    chatRef.current?.scrollTo({
-      top: chatRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [chatMessages]);
 
   const handleSend = () => {
     if (!liveMessage.trim()) return;
@@ -53,11 +44,8 @@ const LiveChat = () => {
         Live Chat
       </div>
 
-      {/* Messages */}
-      <div
-        ref={chatRef}
-        className="flex-1 overflow-y-auto px-3 py-2 space-y-2 text-sm"
-      >
+      {/* Messages (Bottom Se Show Hoga) */}
+      <div className="flex-1 overflow-y-auto px-3 py-2 text-sm flex flex-col-reverse">
         {chatMessages.map((msg, index) => (
           <ChatMessage
             key={index}
@@ -67,7 +55,7 @@ const LiveChat = () => {
         ))}
       </div>
 
-      {/* Input */}
+      {/* Input Section */}
       <div className="border-t p-2 flex gap-2">
         <input
           type="text"
@@ -84,6 +72,7 @@ const LiveChat = () => {
           Send
         </button>
       </div>
+
     </div>
   );
 };
