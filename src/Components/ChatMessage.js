@@ -1,16 +1,28 @@
-import React from 'react'
+import React from "react";
 
-
-const ChatMessages = ({name,message}) => {
+const ChatMessage = ({ name, message, time }) => {
   return (
-    <div className='flex items-center  shadow-sm px-2'>
-     <img
-     alt="user"
-     src='https://yt4.ggpht.com/ytc/AIdro_mIq3VHfPUrGhS9seKsJqeGzc2vC6doz0-nM2OENLkRxafGhMnaFzOjB0stCwcIPBngbw=s32-c-k-c0x00ffffff-no-rj'/>
-     <span className='font-bold px-1'>{name}</span>
-     <span>{message}</span>
+    <div className="flex items-start gap-2">
+      <img
+        alt="avatar"
+        src={`https://api.dicebear.com/7.x/initials/svg?seed=${name}`}
+        className="w-7 h-7 rounded-full"
+      />
+      <div className="flex flex-col">
+        <div className="flex items-center gap-2">
+          <span className="font-semibold text-gray-800 text-xs">
+            {name}
+          </span>
+          <span className="text-gray-400 text-[10px]">
+            {time}
+          </span>
+        </div>
+        <span className="text-gray-700 text-sm leading-snug">
+          {message}
+        </span>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChatMessages
+export default ChatMessage;
