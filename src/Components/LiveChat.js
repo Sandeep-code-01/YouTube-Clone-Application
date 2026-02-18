@@ -1,18 +1,36 @@
-import React from 'react'
-import ChatMassgae from './ChatMassgae'
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addMessages } from "../Utils/chatSlice";
+import ChatMessages from "./ChatMessage";
+import { generateRandomMessage, generateRandomName } from "../Utils/helper";
 
 const LiveChat = () => {
-  return (
-    <div className='border border-gray-200 rounded-lg p-2 m-2'>
-        
-        <h1 className='font-bold text-lg'>Live Chat</h1>
-        <div className="">
-            <ChatMassgae/>
-        </div>
-       
-    </div>
-    
-  )
-}
+  const dispatch = useDispatch();
 
-export default LiveChat
+  const chatMessages = useSelector((store) => store.chat.messages);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      console.log("API Polling");
+
+      dispatch(
+        addMessages({
+          name: generateRandomName(),
+          message: generateRandomMessage(10)+ "🚀",
+        })
+      );
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [dispatch]);
+
+  return (
+    <div className="border border-gray-200 rounded-lg h-[400px] overflow-y-scroll p-2 m-2 flex-col-reverse">
+      {chatMessages.map((c, i) => (
+        <ChatMessages key={i} name={c.name} message={c.message} />
+      ))}
+    </div>
+  );
+};
+
+export default LiveChat;
