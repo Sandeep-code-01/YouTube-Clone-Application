@@ -1,76 +1,64 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleMenu } from "../Utils/appSlice"; // Sidebar menu open/close
+import { toggleMenu } from "../Utils/appSlice";
 import {
-  youtubeLink,        // YouTube logo image
-  menulink,           // Hamburger menu icon
-  bellIconlink,       // Notification bell icon
-  userprofilelink,    // User profile avatar
+  youtubeLink,
+  menulink,
+  bellIconlink,
+  userprofilelink,
 } from "../Utils/Links";
-import { YOUTUBE_SEARCH_API } from "../Utils/constants"; // Search suggestions API
-import { cacheResults } from "../Utils/searchSlice";    // Redux cache action
+import { YOUTUBE_SEARCH_API } from "../Utils/constants";
+import { cacheResults } from "../Utils/searchSlice";
 
-// Header component (Top navigation bar)
 const Header = () => {
-
-  // Search input value
   const [searchQuery, setSearchQuery] = useState("");
-
-  // Suggestions list coming from API / cache
   const [suggestions, setSuggestions] = useState([]);
-
-  // Controls visibility of suggestions dropdown
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  // Redux store search cache
   const searchCache = useSelector((store) => store.search);
-
-  // Redux dispatcher
   const dispatch = useDispatch();
 
-  // Debounced search effect
+  // ✅ Memoized API call
+  const getSearchSuggestions = useCallback(async () => {
+    try {
+      const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
+      const json = await data.json();
+
+      setSuggestions(json[1]);
+
+      dispatch(
+        cacheResults({
+          [searchQuery]: json[1],
+        })
+      );
+    } catch (error) {
+      console.error("Error fetching suggestions:", error);
+    }
+  }, [searchQuery, dispatch]);
+
+  // ✅ Debounced search
   useEffect(() => {
     if (searchQuery === "") return;
 
     const timer = setTimeout(() => {
-      // If search already cached → use it
       if (searchCache[searchQuery]) {
         setSuggestions(searchCache[searchQuery]);
-      } 
-      // Else → call API
-      else {
+      } else {
         getSearchSuggestions();
       }
     }, 200);
 
     return () => clearTimeout(timer);
-  }, [searchQuery, searchCache]);
+  }, [searchQuery, searchCache, getSearchSuggestions]);
 
-  // Fetch search suggestions from YouTube API
-  const getSearchSuggestions = async () => {
-    const data = await fetch(YOUTUBE_SEARCH_API + searchQuery);
-    const json = await data.json();
-    console.log(json);
-
-    setSuggestions(json[1]);
-
-    // Store results in Redux cache
-    dispatch(
-      cacheResults({
-        [searchQuery]: json[1],
-      })
-    );
-  };
-
-  // Toggle sidebar menu
   const handleToggleMenu = () => {
     dispatch(toggleMenu());
   };
 
   return (
     <div className="grid grid-cols-3 items-center shadow-md px-4 py-2 bg-white">
-
-      {/* Left section: Menu + Logo */}
+      
+      {/* Left */}
       <div className="flex items-center gap-3">
         <button
           onClick={handleToggleMenu}
@@ -88,7 +76,7 @@ const Header = () => {
         </a>
       </div>
 
-      {/* Middle section: Search box */}
+      {/* Middle */}
       <div className="flex justify-center relative">
         <div className="flex w-full max-w-md">
           <input
@@ -105,13 +93,14 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Search suggestions dropdown */}
-        {showSuggestions && (
+        {/* Suggestions */}
+        {showSuggestions && suggestions.length > 0 && (
           <div className="absolute top-12 bg-white shadow-lg rounded-lg w-[26rem] z-10">
             <ul>
               {suggestions.map((suggestion, index) => (
                 <li
                   key={index}
+                  onMouseDown={() => setSearchQuery(suggestion)} // ✅ fix blur issue
                   className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                 >
                   <img
@@ -127,7 +116,7 @@ const Header = () => {
         )}
       </div>
 
-      {/* Right section: Icons */}
+      {/* Right */}
       <div className="flex justify-end items-center gap-4">
         <img className="h-8 w-8" alt="Bell Icon" src={bellIconlink} />
         <img
@@ -136,7 +125,6 @@ const Header = () => {
           src={userprofilelink}
         />
       </div>
-
     </div>
   );
 };
